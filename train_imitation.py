@@ -1,11 +1,12 @@
-import os
 import argparse
+import os
 from datetime import datetime
+
 import torch
 
-from gail_airl_ppo.env import make_env
-from gail_airl_ppo.buffer import SerializedBuffer
 from gail_airl_ppo.algo import ALGOS
+from gail_airl_ppo.buffer import SerializedBuffer
+from gail_airl_ppo.env import make_env
 from gail_airl_ppo.trainer import Trainer
 
 

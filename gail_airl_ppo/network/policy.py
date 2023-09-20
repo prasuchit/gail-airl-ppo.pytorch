@@ -1,15 +1,15 @@
 import torch
 from torch import nn
 
-from .utils import build_mlp, reparameterize, evaluate_lop_pi
+from .utils import build_mlp, evaluate_lop_pi, reparameterize
 
 
 class StateIndependentPolicy(nn.Module):
 
     def __init__(self, state_shape, action_shape, hidden_units=(64, 64),
-                 hidden_activation=nn.Tanh()):
+                    hidden_activation=nn.Tanh()):
         super().__init__()
-
+        
         self.net = build_mlp(
             input_dim=state_shape[0],
             output_dim=action_shape[0],
@@ -31,7 +31,7 @@ class StateIndependentPolicy(nn.Module):
 class StateDependentPolicy(nn.Module):
 
     def __init__(self, state_shape, action_shape, hidden_units=(256, 256),
-                 hidden_activation=nn.ReLU(inplace=True)):
+                hidden_activation=nn.ReLU(inplace=True)):
         super().__init__()
 
         self.net = build_mlp(

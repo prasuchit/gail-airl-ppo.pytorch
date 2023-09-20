@@ -2,17 +2,17 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-from .utils import build_mlp
+from ..utils import build_mlp
 
 
 class GAILDiscrim(nn.Module):
 
-    def __init__(self, state_shape, action_shape, hidden_units=(100, 100),
+    def __init__(self, state_dim, action_dim, hidden_units=(100, 100),
                     hidden_activation=nn.Tanh()):
         super().__init__()
 
         self.net = build_mlp(
-            input_dim=state_shape[0] + action_shape[0],
+            input_dim=state_dim + action_dim,
             output_dim=1,
             hidden_units=hidden_units,
             hidden_activation=hidden_activation
@@ -29,7 +29,7 @@ class GAILDiscrim(nn.Module):
 
 class AIRLDiscrim(nn.Module):
 
-    def __init__(self, state_shape, gamma,
+    def __init__(self, state_dim, gamma,
                 hidden_units_r=(64, 64),
                 hidden_units_v=(64, 64),
                 hidden_activation_r=nn.ReLU(inplace=True),
@@ -37,13 +37,13 @@ class AIRLDiscrim(nn.Module):
         super().__init__()
 
         self.g = build_mlp(
-            input_dim=state_shape[0],
+            input_dim=state_dim,
             output_dim=1,
             hidden_units=hidden_units_r,
             hidden_activation=hidden_activation_r
         )
         self.h = build_mlp(
-            input_dim=state_shape[0],
+            input_dim=state_dim,
             output_dim=1,
             hidden_units=hidden_units_v,
             hidden_activation=hidden_activation_v

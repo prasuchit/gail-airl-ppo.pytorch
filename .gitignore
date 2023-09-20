@@ -5,3 +5,5 @@ buffers/
 *.log
 *.out
 run.sh
+**.pth
+**.zip

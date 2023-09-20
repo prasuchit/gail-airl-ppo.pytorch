@@ -1,10 +1,11 @@
 import math
+
 import torch
 from torch import nn
 
 
 def build_mlp(input_dim, output_dim, hidden_units=[64, 64],
-              hidden_activation=nn.Tanh(), output_activation=None):
+            hidden_activation=nn.Tanh(), output_activation=None):
     layers = []
     units = input_dim
     for next_units in hidden_units:

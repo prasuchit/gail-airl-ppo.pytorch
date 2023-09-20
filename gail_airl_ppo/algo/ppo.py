@@ -2,9 +2,10 @@ import torch
 from torch import nn
 from torch.optim import Adam
 
-from .base import Algorithm
 from gail_airl_ppo.buffer import RolloutBuffer
-from gail_airl_ppo.network import StateIndependentPolicy, StateFunction
+from gail_airl_ppo.network import StateFunction, StateIndependentPolicy
+
+from .base import Algorithm
 
 
 def calculate_gae(values, rewards, dones, next_values, gamma, lambd):
@@ -24,10 +25,10 @@ def calculate_gae(values, rewards, dones, next_values, gamma, lambd):
 class PPO(Algorithm):
 
     def __init__(self, state_shape, action_shape, device, seed, gamma=0.995,
-                 rollout_length=2048, mix_buffer=20, lr_actor=3e-4,
-                 lr_critic=3e-4, units_actor=(64, 64), units_critic=(64, 64),
-                 epoch_ppo=10, clip_eps=0.2, lambd=0.97, coef_ent=0.0,
-                 max_grad_norm=10.0):
+                rollout_length=2048, mix_buffer=20, lr_actor=3e-4,
+                lr_critic=3e-4, units_actor=(64, 64), units_critic=(64, 64),
+                epoch_ppo=10, clip_eps=0.2, lambd=0.97, ent_coef=0.0,
+                max_grad_norm=10.0):
         super().__init__(state_shape, action_shape, device, seed, gamma)
 
         # Rollout buffer.
@@ -62,12 +63,12 @@ class PPO(Algorithm):
         self.epoch_ppo = epoch_ppo
         self.clip_eps = clip_eps
         self.lambd = lambd
-        self.coef_ent = coef_ent
+        self.ent_coef = ent_coef
         self.max_grad_norm = max_grad_norm
 
     def is_update(self, step):
         return step % self.rollout_length == 0
-
+    
     def step(self, env, state, t, step):
         t += 1
 
@@ -90,8 +91,8 @@ class PPO(Algorithm):
         self.update_ppo(
             states, actions, rewards, dones, log_pis, next_states, writer)
 
-    def update_ppo(self, states, actions, rewards, dones, log_pis, next_states,
-                   writer):
+    def update_ppo(self, states, actions, rewards, dones, log_pis, next_states, 
+                    writer):
         with torch.no_grad():
             values = self.critic(states)
             next_values = self.critic(next_states)
@@ -130,7 +131,7 @@ class PPO(Algorithm):
         loss_actor = torch.max(loss_actor1, loss_actor2).mean()
 
         self.optim_actor.zero_grad()
-        (loss_actor - self.coef_ent * entropy).backward(retain_graph=False)
+        (loss_actor - self.ent_coef * entropy).backward(retain_graph=False)
         nn.utils.clip_grad_norm_(self.actor.parameters(), self.max_grad_norm)
         self.optim_actor.step()
 

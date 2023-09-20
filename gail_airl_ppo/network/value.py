@@ -7,7 +7,7 @@ from .utils import build_mlp
 class StateFunction(nn.Module):
 
     def __init__(self, state_shape, hidden_units=(64, 64),
-                 hidden_activation=nn.Tanh()):
+                hidden_activation=nn.Tanh()):
         super().__init__()
 
         self.net = build_mlp(
@@ -24,7 +24,7 @@ class StateFunction(nn.Module):
 class StateActionFunction(nn.Module):
 
     def __init__(self, state_shape, action_shape, hidden_units=(100, 100),
-                 hidden_activation=nn.Tanh()):
+                hidden_activation=nn.Tanh()):
         super().__init__()
 
         self.net = build_mlp(
@@ -41,7 +41,7 @@ class StateActionFunction(nn.Module):
 class TwinnedStateActionFunction(nn.Module):
 
     def __init__(self, state_shape, action_shape, hidden_units=(256, 256),
-                 hidden_activation=nn.ReLU(inplace=True)):
+                hidden_activation=nn.ReLU(inplace=True)):
         super().__init__()
 
         self.net1 = build_mlp(

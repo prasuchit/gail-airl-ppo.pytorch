@@ -1,6 +1,6 @@
-from tqdm import tqdm
 import numpy as np
 import torch
+from tqdm import tqdm
 
 from .buffer import Buffer
 

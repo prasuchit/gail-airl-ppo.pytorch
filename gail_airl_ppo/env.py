@@ -4,7 +4,8 @@ gym.logger.set_level(40)
 
 
 def make_env(env_id):
-    return NormalizedEnv(gym.make(env_id))
+    # return NormalizedEnv(gym.make(env_id))
+    return gym.make(env_id)
 
 
 class NormalizedEnv(gym.Wrapper):

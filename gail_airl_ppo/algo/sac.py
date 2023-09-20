@@ -1,22 +1,23 @@
 import os
+
 import torch
 from torch import nn
 from torch.optim import Adam
 
-from .base import Algorithm
 from gail_airl_ppo.buffer import Buffer
-from gail_airl_ppo.utils import soft_update, disable_gradient
-from gail_airl_ppo.network import (
-    StateDependentPolicy, TwinnedStateActionFunction
-)
+from gail_airl_ppo.network import (StateDependentPolicy,
+                                    TwinnedStateActionFunction)
+from gail_airl_ppo.utils import disable_gradient, soft_update
+
+from .base import Algorithm
 
 
 class SAC(Algorithm):
 
     def __init__(self, state_shape, action_shape, device, seed, gamma=0.99,
-                 batch_size=256, buffer_size=10**6, lr_actor=3e-4,
-                 lr_critic=3e-4, lr_alpha=3e-4, units_actor=(256, 256),
-                 units_critic=(256, 256), start_steps=10000, tau=5e-3):
+                batch_size=256, buffer_size=10**6, lr_actor=3e-4,
+                lr_critic=3e-4, lr_alpha=3e-4, units_actor=(256, 256),
+                units_critic=(256, 256), start_steps=10000, tau=5e-3):
         super().__init__(state_shape, action_shape, device, seed, gamma)
 
         # Replay buffer.
@@ -100,7 +101,7 @@ class SAC(Algorithm):
         self.update_target()
 
     def update_critic(self, states, actions, rewards, dones, next_states,
-                      writer):
+                        writer):
         curr_qs1, curr_qs2 = self.critic(states, actions)
         with torch.no_grad():
             next_actions, log_pis = self.actor.sample(next_states)
@@ -165,7 +166,7 @@ class SAC(Algorithm):
 class SACExpert(SAC):
 
     def __init__(self, state_shape, action_shape, device, path,
-                 units_actor=(256, 256)):
+                units_actor=(256, 256)):
         self.actor = StateDependentPolicy(
             state_shape=state_shape,
             action_shape=action_shape,

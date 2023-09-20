@@ -1,24 +1,25 @@
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 from torch.optim import Adam
 
-from .ppo import PPO
 from gail_airl_ppo.network import GAILDiscrim
+
+from .ppo import PPO
 
 
 class GAIL(PPO):
 
     def __init__(self, buffer_exp, state_shape, action_shape, device, seed,
-                 gamma=0.995, rollout_length=50000, mix_buffer=1,
-                 batch_size=64, lr_actor=3e-4, lr_critic=3e-4, lr_disc=3e-4,
-                 units_actor=(64, 64), units_critic=(64, 64),
-                 units_disc=(100, 100), epoch_ppo=50, epoch_disc=10,
-                 clip_eps=0.2, lambd=0.97, coef_ent=0.0, max_grad_norm=10.0):
+                    gamma=0.995, rollout_length=50000, mix_buffer=1,
+                    batch_size=64, lr_actor=3e-4, lr_critic=3e-4, lr_disc=3e-4,
+                    units_actor=(64, 64), units_critic=(64, 64),
+                    units_disc=(100, 100), epoch_ppo=50, epoch_disc=10,
+                    clip_eps=0.2, lambd=0.97, ent_coef=0.0, max_grad_norm=10.0):
         super().__init__(
             state_shape, action_shape, device, seed, gamma, rollout_length,
             mix_buffer, lr_actor, lr_critic, units_actor, units_critic,
-            epoch_ppo, clip_eps, lambd, coef_ent, max_grad_norm
+            epoch_ppo, clip_eps, lambd, ent_coef, max_grad_norm
         )
 
         # Expert's buffer.

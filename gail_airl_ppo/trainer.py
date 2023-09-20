@@ -1,16 +1,18 @@
 import os
-from time import time, sleep
 from datetime import timedelta
+from time import sleep, time
+
 from torch.utils.tensorboard import SummaryWriter
 
 
 class Trainer:
 
-    def __init__(self, env, env_test, algo, log_dir, seed=0, num_steps=10**5,
-                 eval_interval=10**3, num_eval_episodes=5):
+    def __init__(self, env, env_test, algo, log_dir, seed=0, num_steps=10**5, 
+                eval_interval=10**3, num_eval_episodes=5):
         super().__init__()
 
         # Env to collect samples.
+        
         self.env = env
         self.env.seed(seed)
 
@@ -75,8 +77,8 @@ class Trainer:
 
         self.writer.add_scalar('return/test', mean_return, step)
         print(f'Num steps: {step:<6}   '
-              f'Return: {mean_return:<5.1f}   '
-              f'Time: {self.time}')
+                f'Return: {mean_return:<5.1f}   '
+                f'Time: {self.time}')
 
     @property
     def time(self):
