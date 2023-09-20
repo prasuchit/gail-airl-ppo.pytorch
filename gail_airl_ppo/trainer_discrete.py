@@ -64,13 +64,6 @@ class Trainer:
                 
                 s_prime, a, pi_a, r, done, s_val, self.env = self.algo.step(self.env, s, self.render)
 
-                # if (done and steps != max_e_steps):
-                #     # if self.env_id == 'LunarLander-v2':
-                #     #     if r <=-100: r = -30  # good for LunarLander
-                #     dw = True  #dw: dead and win
-                # else:
-                #     dw = False
-
                 self.algo.buffer.put((s, a, r, s_prime, pi_a, s_val, done))
                 s = s_prime
                 ep_r += r

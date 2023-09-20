@@ -20,7 +20,6 @@ def run(args):
     device = torch.device("cuda" if (torch.cuda.is_available() and args.cuda) else "cpu")
     torch.cuda.empty_cache()
     kwargs = {
-        # "env_with_Dead": env_with_Dead[EnvIdex],
         "state_dim": state_dim,
         "action_dim": action_dim,
         "rollout_length": args.rollout_length,

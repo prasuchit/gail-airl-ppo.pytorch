@@ -17,11 +17,9 @@ from gail_airl_ppo.algo.discrete.utils import disable_gradient
 
 PACKAGE_PATH = Path(__file__).parents[2]	# Abs path of package
 
-class PPO(Algorithm):
-    
+class PPO(Algorithm):    
     def __init__(
             self,
-            # env_with_Dead,
             state_dim,
             action_dim,
             gamma=0.99,
@@ -59,9 +57,6 @@ class PPO(Algorithm):
         
         self.MseLoss = nn.MSELoss()
         
-        self.s_dim = state_dim
-        self.data = []
-        # self.env_with_Dead = env_with_Dead
         self.gamma = gamma
         self.lambd = lambd
         self.clip_eps = clip_eps
