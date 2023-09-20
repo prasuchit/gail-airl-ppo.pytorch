@@ -9,7 +9,7 @@ import torch
 from gail_airl_ppo.algo.discrete import AIRL, SerializedBuffer
 from gail_airl_ppo.trainer_discrete import Trainer
 
-PACKAGE_PATH = Path(__file__).parents[0]	# Abs path of package
+PACKAGE_PATH = Path(__file__)	# Abs path of package
 
 def run(args):
     env = gym.make(args.env_id)

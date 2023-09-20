@@ -8,7 +8,7 @@ from gail_airl_ppo.algo.discrete import PPOExpert
 from gail_airl_ppo.algo.discrete.utils import collect_demo
 from gail_airl_ppo.env import make_env
 
-PACKAGE_PATH = Path(__file__).parents[0]	# Abs path of package
+PACKAGE_PATH = Path(__file__)	# Abs path of package
 
 def run(args):
     env = make_env(args.env_id)
